@@ -1,11 +1,7 @@
 [build]
 builder = "dockerfile"
 dockerfilePath = "backend/Dockerfile"
-buildCommand = ""
 
 [deploy]
-startCommand = "java -jar app.jar"
-restartPolicyType = "on-failure"
+restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 5
-healthcheckPath = "/api/health"
-healthcheckTimeout = 30
