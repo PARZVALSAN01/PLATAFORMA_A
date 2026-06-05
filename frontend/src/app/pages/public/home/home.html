@@ -1,0 +1,156 @@
+<app-header />
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="container hero-content">
+    <span class="hero-badge">✦ Formando líderes desde 2003 ✦</span>
+    <h1 class="hero-title">Instituto <span class="accent">Anáhuac</span></h1>
+    <p class="hero-text">Más de 22 años de excelencia educativa formando líderes del mañana. Primaria, Secundaria y Preparatoria con formación integral, valores y tecnología de punta.</p>
+    <div class="hero-actions">
+      <a routerLink="/oferta-educativa" class="btn btn-accent btn-lg hero-btn-primary">
+        Conoce nuestra oferta
+      </a>
+      <a href="https://wa.link/492onw" target="_blank" class="btn btn-white btn-lg">
+        💬 WhatsApp
+      </a>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Descubre más</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section">
+  <div class="container stats-grid">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-item">
+        <span class="stat-value">{{ stat.value }}</span>
+        <span class="stat-label">{{ stat.label }}</span>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- About strip -->
+<section class="about-strip">
+  <div class="container about-strip-inner">
+    <div class="about-strip-text">
+      <h2 class="section-title">La mejor opción educativa en Fuentes del Valle</h2>
+      <p>El Instituto Anáhuac es una institución privada con más de 22 años de experiencia formando estudiantes de excelencia en primaria y secundaria. Nuestra comunidad de más de 5,000 egresados es la prueba de nuestro compromiso con la calidad.</p>
+      <a routerLink="/nosotros" class="btn btn-primary">Conoce nuestra historia</a>
+    </div>
+    <div class="about-strip-badge">
+      <div class="badge-circle">
+        <span class="bc-num">22+</span>
+        <span class="bc-txt">años de<br>excelencia</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="section values-section">
+  <div class="container">
+    <div class="text-center section-header-centered">
+      <span class="section-eyebrow">Nuestra propuesta educativa</span>
+      <h2 class="section-title">¿Por qué elegirnos?</h2>
+      <p class="section-subtitle" style="margin: 0 auto;">Seis pilares que hacen del Instituto Anáhuac la mejor opción para tus hijos</p>
+    </div>
+    <div class="values-grid">
+      @for (value of values; track value.title) {
+        <div class="value-card card">
+          <div class="card-front">
+            <span class="value-icon">{{ value.icon }}</span>
+            <h3>{{ value.title }}</h3>
+            <p>{{ value.desc }}</p>
+          </div>
+          <div class="card-back">
+            <span class="value-icon">{{ value.icon }}</span>
+            <h3>{{ value.title }}</h3>
+            <p>{{ value.desc }}</p>
+            <span class="card-back-cta">¡Conoce más →</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Levels preview -->
+<section class="levels-section">
+  <div class="container">
+    <div class="text-center section-header-centered">
+      <span class="section-eyebrow">Oferta educativa</span>
+      <h2 class="section-title">Niveles académicos</h2>
+    </div>
+    <div class="levels-grid">
+      <a routerLink="/oferta-educativa/primaria" class="level-card">
+        <div class="level-icon">🎒</div>
+        <h3>Primaria</h3>
+        <p>Bases sólidas con inglés bilingüe, cómputo, música y educación física. Formación integral desde los primeros años.</p>
+        <span class="level-cta">Ver más →</span>
+      </a>
+      <a routerLink="/oferta-educativa/secundaria" class="level-card level-card-accent">
+        <div class="level-badge-tag">Popular</div>
+        <div class="level-icon">📚</div>
+        <h3>Secundaria</h3>
+        <p>Pensamiento crítico, laboratorios, orientación vocacional y participación en Olimpiadas del Conocimiento.</p>
+        <span class="level-cta">Ver más →</span>
+      </a>
+      <a routerLink="/oferta-educativa/preparatoria" class="level-card level-card-gold">
+        <div class="level-badge-tag" style="background:var(--gold-400)">Próximamente</div>
+        <div class="level-icon">🎓</div>
+        <h3>Preparatoria</h3>
+        <p>Próximamente. Programa de preparatoria de excelencia con enfoque en competencias del siglo XXI.</p>
+        <span class="level-cta">Más info →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- News -->
+@if (news.length) {
+  <section class="section news-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Noticias Recientes</h2>
+        <a routerLink="/comunidad" class="btn btn-outline btn-sm">Ver todas</a>
+      </div>
+      <div class="news-grid">
+        @for (item of news; track item.id) {
+          <div class="card news-card">
+            <div class="news-category badge badge-accent">{{ item.category }}</div>
+            <h3 class="news-title">{{ item.title }}</h3>
+            <p class="news-excerpt">{{ item.excerpt || (item.content | slice:0:120) }}...</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+}
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-particles">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="container cta-content">
+    <span class="cta-eyebrow">Inscripciones abiertas</span>
+    <h2>¿Listo para formar parte de nuestra comunidad?</h2>
+    <p>Da el primer paso hacia una educación de excelencia. Contáctanos hoy mismo y agenda tu visita.</p>
+    <div class="cta-actions">
+      <a href="https://wa.link/492onw" target="_blank" class="btn btn-white btn-lg">💬 Escríbenos por WhatsApp</a>
+      <a routerLink="/contacto" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.5);color:#fff;">Formulario de contacto</a>
+    </div>
+  </div>
+</section>
+
+<app-footer />

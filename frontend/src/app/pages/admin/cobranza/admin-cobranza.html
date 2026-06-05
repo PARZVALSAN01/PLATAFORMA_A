@@ -1,0 +1,108 @@
+<app-dashboard-layout>
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Cobranza</h1>
+      <p class="page-sub">Ciclo escolar 2025-2026 &middot; Colegiatura: $2,500 MXN/mes</p>
+    </div>
+    <div class="header-stats">
+      <button class="btn btn-outline btn-sm" (click)="downloadTemplate()">📥 Plantilla</button>
+      <button class="btn btn-outline btn-sm" (click)="excelInput.click()">📤 Cargar Excel</button>
+      <input #excelInput type="file" accept=".xlsx,.xls" hidden (change)="onExcelUpload($event)">
+      <button class="btn btn-outline btn-sm" (click)="exportExcel()">📊 Exportar</button>
+      <div class="hstat green">
+        <span class="hstat-val">{{ totalCobrado() | number }}</span>
+        <span class="hstat-label">Cobrado</span>
+      </div>
+      <div class="hstat red">
+        <span class="hstat-val">{{ totalPendiente() | number }}</span>
+        <span class="hstat-label">Pendiente</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="card filters-bar">
+    <input class="form-input search-input" type="search" placeholder="Buscar alumno..."
+      [(ngModel)]="search" (ngModelChange)="filtrar()">
+    <select class="form-input" [(ngModel)]="filtroEstado" (ngModelChange)="filtrar()">
+      <option value="">Todos</option>
+      <option value="al_dia">Al dia</option>
+      <option value="adeudo">Con adeudo</option>
+    </select>
+  </div>
+
+  <!-- Resumen por mes -->
+  <div class="meses-grid">
+    @for (m of MESES; track m; let i = $index) {
+      <div class="mes-card card" [class.mes-activo]="mesActivo === i" (click)="mesActivo = i">
+        <span class="mes-nombre">{{ m }}</span>
+        <span class="mes-pagados">{{ pagadosMes(i) }}/{{ alumnos().length }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Tabla de alumnos -->
+  <div class="card table-card">
+    <div class="tabla-header">
+      <h2>Detalle &mdash; {{ MESES[mesActivo] }}</h2>
+      <button class="btn btn-outline btn-sm" (click)="marcarTodosPagados()">Marcar todos como pagados</button>
+    </div>
+    @if (loading()) {
+      <div class="loading-state">Cargando alumnos...</div>
+    } @else if (alumnosFiltrados().length === 0) {
+      <div class="empty-state"><span>&#x1F4B0;</span><p>Sin resultados</p></div>
+    } @else {
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Correo</th>
+              <th>Meses pagados</th>
+              <th>Adeudo</th>
+              <th>{{ MESES[mesActivo] }}</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of alumnosFiltrados(); track a.id) {
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <div class="avatar">{{ initials(a) }}</div>
+                    <span>{{ a.firstName }} {{ a.lastName }}</span>
+                  </div>
+                </td>
+                <td class="text-sm text-gray">{{ a.email }}</td>
+                <td>
+                  <div class="meses-dots">
+                    @for (m of MESES; track m; let i = $index) {
+                      <div class="dot" [class.dot-paid]="isPaid(a.id, i)" [title]="m"></div>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <span [class]="adeudo(a.id) > 0 ? 'badge badge-danger' : 'badge badge-success'">
+                    {{ adeudo(a.id) > 0 ? ('$' + (adeudo(a.id) | number)) : 'Al dia' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class.badge-success]="isPaid(a.id, mesActivo)" [class.badge-warning]="!isPaid(a.id, mesActivo)">
+                    {{ isPaid(a.id, mesActivo) ? 'Pagado' : 'Pendiente' }}
+                  </span>
+                </td>
+                <td>
+                  @if (!isPaid(a.id, mesActivo)) {
+                    <button class="btn btn-primary btn-sm" (click)="marcarPagado(a.id, mesActivo)">Registrar pago</button>
+                  } @else {
+                    <button class="btn btn-outline btn-sm btn-danger" (click)="desmarcarPagado(a.id, mesActivo)">Revertir</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</app-dashboard-layout>

@@ -1,0 +1,82 @@
+<div class="dashboard-wrapper">
+  <!-- Overlay -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+  }
+
+  <!-- Sidebar -->
+  <aside [class]="'sidebar ' + (sidebarOpen() ? 'open' : '')">
+    <div class="sidebar-inner">
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <a routerLink="/" class="logo-link">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div>
+            <span class="brand-primary">Instituto </span>
+            <span class="brand-accent">Anáhuac</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- User info -->
+      <div class="sidebar-user">
+        <div class="user-avatar">{{ initials }}</div>
+        <div>
+          <p class="user-name">{{ auth.user()?.firstName }} {{ auth.user()?.lastName }}</p>
+          <p class="user-role">{{ roleLabel }}</p>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="sidebar-nav">
+        @for (item of items; track item.path) {
+          <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+             class="sidebar-link" (click)="closeSidebar()">
+            <span class="link-icon">{{ item.icon === 'grid' ? '📊' : item.icon === 'users' ? '👥' : item.icon === 'bell' ? '🔔' : item.icon === 'newspaper' ? '📰' : item.icon === 'image' ? '🖼️' : item.icon === 'calendar' ? '📅' : item.icon === 'mail' ? '✉️' : item.icon === 'book' ? '📚' : item.icon === 'clipboard' ? '📋' : item.icon === 'bar-chart' ? '📈' : item.icon === 'message' ? '💬' : item.icon === 'dollar-sign' ? '💲' : item.icon === 'shirt' ? '👔' : item.icon === 'user' ? '👤' : '📄' }}</span>
+            <span class="link-text">{{ item.name }}</span>
+          </a>
+        }
+      </nav>
+
+      <!-- Bottom -->
+      <div class="sidebar-bottom">
+        <a routerLink="/" class="sidebar-link" (click)="closeSidebar()">
+          <span class="link-icon">🏠</span>
+          <span class="link-text">Ir al sitio</span>
+        </a>
+        <button class="sidebar-link logout-link" (click)="handleLogout()">
+          <span class="link-icon">🚪</span>
+          <span class="link-text">Cerrar sesión</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <!-- Top bar -->
+    <header class="dashboard-topbar">
+      <button class="topbar-toggle" (click)="toggleSidebar()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-right">
+        <div [class]="'theme-toggle ' + (theme.isDark() ? 'active' : '')" (click)="theme.toggle()" title="Cambiar tema">
+          <div class="toggle-track">
+            <div class="toggle-thumb">{{ theme.isDark() ? '🌙' : '☀️' }}</div>
+          </div>
+        </div>
+        <button class="notif-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="dashboard-content">
+      <ng-content></ng-content>
+    </main>
+  </div>
+</div>
